@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using ASB.Integration.Assessment.WebAPI.Service;
 using ASB.Integration.Assessment.WebAPI.Models;
+using ASB.Integration.Assessment.WebAPI.Common;
 
 namespace ASB.Integration.Assessment.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CreditCardsController : ControllerBase

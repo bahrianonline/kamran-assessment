@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ASB.Integration.Assessment.WebAPI.DatabaseContext;
 using ASB.Integration.Assessment.WebAPI.Service;
+using ASB.Integration.Assessment.WebAPI.Common;
 
 namespace ASB.Integration.Assessment.WebAPI
 {
@@ -23,6 +24,8 @@ namespace ASB.Integration.Assessment.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             services.AddScoped<ICardStoreService, CardStoreService>();
 
@@ -45,6 +48,8 @@ namespace ASB.Integration.Assessment.WebAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

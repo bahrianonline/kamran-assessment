@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "df650a5f-1991-4e12-baf4-163b040dd3ba",
+		"name": "Assemement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PostCardNumber",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cardHolderName\":\"Test User 2\",\"cardNumber\":\"5454545454545454\",\"cardExpiryDate\":\"2025-06-01T00:00:00\",\"cvc\":321}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/api/creditcards/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"creditcards",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"if (jsonData.token) {\r",
+							"    pm.globals.set(\"token\", jsonData.token);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"Asbtestuser1\",\"password\":\"123456\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/api/Authenticate/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"Authenticate",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCards",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/api/creditcards",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"creditcards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCardById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/api/creditcards/2",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"creditcards",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Url",
+			"value": "https://localhost:44391"
+		}
+	]
+}

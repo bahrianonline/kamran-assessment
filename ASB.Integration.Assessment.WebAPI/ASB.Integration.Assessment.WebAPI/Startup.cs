@@ -1,9 +1,12 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ASB.Integration.Assessment.WebAPI.DatabaseContext;
+using ASB.Integration.Assessment.WebAPI.Service;
 
 namespace ASB.Integration.Assessment.WebAPI
 {
@@ -21,7 +24,12 @@ namespace ASB.Integration.Assessment.WebAPI
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.AddScoped<ICardStoreService, CardStoreService>();
+
             services.AddControllers();
+
+            var connectionString = Configuration["ConnectionString"];
+            services.AddDbContext<CreditCardStoreDbContext>(optionBuilder => optionBuilder.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

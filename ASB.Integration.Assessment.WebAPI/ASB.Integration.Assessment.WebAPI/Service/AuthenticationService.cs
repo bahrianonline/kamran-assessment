@@ -4,10 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+using ASB.Integration.Assessment.WebAPI.Common;
 using ASB.Integration.Assessment.WebAPI.DatabaseContext;
 using ASB.Integration.Assessment.WebAPI.DatabaseContext.EntityModels;
 using ASB.Integration.Assessment.WebAPI.Models;
-using Microsoft.Extensions.Configuration;
 
 namespace ASB.Integration.Assessment.WebAPI.Service
 {
@@ -39,7 +40,7 @@ namespace ASB.Integration.Assessment.WebAPI.Service
 
             var loggedInUser = _context.UserLoginCredentials.Where(
                 user => user.Username == model.Username &&
-                user.Password == model.Password).FirstOrDefault();
+                user.Password == Helper.HashString(model.Password, _configuration["Secret"])).FirstOrDefault();
 
             if (loggedInUser == null)
             {

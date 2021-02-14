@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using ASB.Integration.Assessment.WebAPI.Common;
 
 namespace ASB.Integration.Assessment.WebAPI
 {
@@ -16,7 +17,7 @@ namespace ASB.Integration.Assessment.WebAPI
             CreateMap<DatabaseContext.EntityModels.CreditCardEntity, Models.CreditCardModel>()
                 .ForMember(model => model.CardHolderName, act => act.MapFrom(entity => entity.Name))
                 .ForMember(model => model.CardStoreId, act => act.MapFrom(entity => entity.Id))
-                .ForMember(model => model.CardNumber, act => act.MapFrom(entity => entity.CardNumber))
+                .ForMember(model => model.CardNumber, act => act.MapFrom(entity => Helper.Decrypt(entity.CardNumber)))
                 .ForMember(model => model.Cvc, act => act.MapFrom(entity => entity.Cvc))
                 .ForMember(model => model.CardExpiryDate, act => act.MapFrom(entity => entity.CardExpiryDate))
                 .ForMember(model => model.CreatedAt, act => act.MapFrom(entity => entity.CreatedAt));

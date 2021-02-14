@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ASB.Integration.Assessment.WebAPI.DatabaseContext;
 using ASB.Integration.Assessment.WebAPI.DatabaseContext.EntityModels;
+using ASB.Integration.Assessment.WebAPI.Common;
 
 namespace ASB.Integration.Assessment.WebAPI.Service
 {
@@ -13,14 +14,17 @@ namespace ASB.Integration.Assessment.WebAPI.Service
     public class CardStoreService : ICardStoreService
     {
         private readonly CreditCardStoreDbContext _context;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CardStoreService"/> class.
         /// </summary>
         /// <param name="context"></param>
-        public CardStoreService(CreditCardStoreDbContext context)
+        /// <param name="configuration"><see cref="IConfiguration"/>.</param>
+        public CardStoreService(CreditCardStoreDbContext context, IConfiguration configuration)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         /// <inheritdoc/>
         public async Task<CreditCardEntity> GetCreditCard(long id)
@@ -31,7 +35,7 @@ namespace ASB.Integration.Assessment.WebAPI.Service
         /// <inheritdoc/>
         public async Task<CreditCardEntity> GetCreditCard(string cardNumber)
         {
-            return await _context.CreditCards.Where(record => record.CardNumber == cardNumber).FirstOrDefaultAsync().ConfigureAwait(false);
+            return await _context.CreditCards.Where(record => record.CardHash == Helper.HashString(cardNumber, _configuration["Secret"])).FirstOrDefaultAsync().ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -52,7 +56,8 @@ namespace ASB.Integration.Assessment.WebAPI.Service
 
             if (lookupCreditCard == null)
             {
-                creditCardEntity.CardNumber = creditCardEntity.CardNumber;
+                creditCardEntity.CardHash = Helper.HashString(creditCardEntity.CardNumber, _configuration["Secret"]);
+                creditCardEntity.CardNumber = Helper.Encrypt(creditCardEntity.CardNumber);
 
                 _context.CreditCards.Add(creditCardEntity);
 

@@ -22,6 +22,11 @@ namespace ASB.Integration.Assessment.WebAPI.DatabaseContext.EntityModels
         public string CardNumber { get; set; }
 
         /// <summary>
+        /// Gets or sets the card hash.
+        /// </summary>
+        public string CardHash { get; set; }
+
+        /// <summary>
         /// Gets or sets the name.
         /// </summary>
         public string Name { get; set; }

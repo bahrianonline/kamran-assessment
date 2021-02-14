@@ -17,7 +17,6 @@ namespace ASB.Integration.Assessment.WebAPI
             try
             {
                 var creditCardStoreDbContext = serviceScope.ServiceProvider.GetService<CreditCardStoreDbContext>();
-                creditCardStoreDbContext.Database.EnsureDeleted();
                 creditCardStoreDbContext.Database.EnsureCreated();
             }
             catch (Exception exception)
